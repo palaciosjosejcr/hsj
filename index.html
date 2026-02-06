@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Control Electroválvula ESP32</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #333;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 400px;
+      margin: auto;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    button {
+      width: 80%;
+      padding: 15px;
+      font-size: 18px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .on {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    .off {
+      background-color: #f44336;
+      color: white;
+    }
+
+    #estado {
+      margin-top: 15px;
+      font-size: 16px;
+      color: #555;
+    }
+
+    input {
+      width: 80%;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>ESP32 - Electroválvula</h1>
+
+  <div class="card">
+    <p>IP del ESP32</p>
+    <input type="text" id="ip" placeholder="Ej: 192.168.1.50">
+
+    <button class="on" onclick="encender()">ENCENDER</button>
+    <button class="off" onclick="apagar()">APAGAR</button>
+
+    <div id="estado">Estado: sin conexión</div>
+  </div>
+
+  <script>
+    function encender() {
+      let ip = document.getElementById("ip").value;
+      if (ip === "") {
+        alert("Ingresa la IP del ESP32");
+        return;
+      }
+
+      fetch(`http://${ip}/ON`)
+        .then(() => {
+          document.getElementById("estado").innerText = "Estado: Electroválvula ACTIVADA";
+        })
+        .catch(() => {
+          document.getElementById("estado").innerText = "Error de conexión";
+        });
+    }
+
+    function apagar() {
+      let ip = document.getElementById("ip").value;
+      if (ip === "") {
+        alert("Ingresa la IP del ESP32");
+        return;
+      }
+
+      fetch(`http://${ip}/OFF`)
+        .then(() => {
+          document.getElementById("estado").innerText = "Estado: Electroválvula DESACTIVADA";
+        })
+        .catch(() => {
+          document.getElementById("estado").innerText = "Error de conexión";
+        });
+    }
+  </script>
+
+</body>
+</html>
